@@ -1,8 +1,7 @@
 package com.kms.mywebapp;
 
-import ch.qos.logback.core.net.AbstractSSLSocketAppender;
-import com.kms.mywebapp.user.User;
-import com.kms.mywebapp.user.UserRepository;
+import com.kms.mywebapp.student.Student;
+import com.kms.mywebapp.student.StudentRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,24 +14,23 @@ import java.util.Optional;
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @Rollback(false)
-public class UserRepositoryTest {
-    @Autowired private UserRepository userRepository;
+public class StudentRepositoryTest {
+    @Autowired private StudentRepository userRepository;
 
     @Test
     public void testAddNew() {
-        User user = new User();
+        Student user = new Student();
         user.setEmail("sandra.murphy@example.com");
         user.setFirstName("Sandra");
         user.setLastName("Murphy");
-        user.setPassword("sandra123456");
-        User savedUser = userRepository.save(user);
+        Student savedUser = userRepository.save(user);
 
         Assertions.assertThat(savedUser).isNotNull();
         Assertions.assertThat(savedUser.getId()).isGreaterThan(0);
     }
     @Test
     public void testListAll(){
-        Iterable<User> users = userRepository.findAll();
+        Iterable<Student> users = userRepository.findAll();
         Assertions.assertThat(users).hasSizeGreaterThan(0);
         users.forEach(user -> {
             System.out.println(user.toString());
@@ -41,16 +39,16 @@ public class UserRepositoryTest {
 
     @Test
     public void testUpdate(){
-        User user = userRepository.findById(1).get();
-        user.setPassword("sheila123456");
+        Student user = userRepository.findById(1).get();
+        user.setFirstName("Nana");
         userRepository.save(user);
-        User updatedUser = userRepository.findById(1).get();
-        Assertions.assertThat(updatedUser.getPassword()).isEqualTo("sheila123456");
+        Student updatedUser = userRepository.findById(1).get();
+        Assertions.assertThat(updatedUser.getFirstName()).isEqualTo("Nana");
     }
     @Test
     public void testGetById() {
         Integer userId = 2;
-        Optional<User> optionalUser = userRepository.findById(userId);
+        Optional<Student> optionalUser = userRepository.findById(userId);
         Assertions.assertThat(optionalUser).isPresent();
         System.out.println(optionalUser.get());
     }
@@ -58,7 +56,7 @@ public class UserRepositoryTest {
     public void testDeleteById() {
         Integer userId = 2;
         userRepository.deleteById(userId);
-        Optional<User> optionalUser = userRepository.findById(userId);
+        Optional<Student> optionalUser = userRepository.findById(userId);
         Assertions.assertThat(optionalUser).isNotPresent();
     }
 }

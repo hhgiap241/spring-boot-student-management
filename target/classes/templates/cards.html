@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+        <html lang="en" xmlns:th="http://www.thymeleaf.org">
+        <head>
+        <meta charset="UTF-8">
+        <title>Manage ID Card</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
+</head>
+<body>
+<div class="container-fluid text-center">
+    <div>
+        <h1>Manage Student ID Cards</h1>
+    </div>
+    <div>
+        <table class="table table-bordered">
+            <thead class="thead-dark">
+            <tr>
+                <th>ID</th>
+                <th>Card Number</th>
+                <th>Student ID</th>
+            </tr>
+            </thead>
+            <tbody>
+            <th:block th:each="card : ${listCards}">
+                <tr>
+                    <td>[[${card.id}]]</td>
+                    <td>[[${card.card_number}]]</td>
+                    <td>[[${card.student.id}]]</td>
+                </tr>
+            </th:block>
+            </tbody>
+        </table>
+    </div>
+    <div>
+        <a th:href="@{/}" class="h6">Go To Homepage</a>
+    </div>
+</div>
+</body>
+</html>

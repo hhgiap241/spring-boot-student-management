@@ -8,11 +8,11 @@
 <body>
 <div class="container-fluid text-center">
     <div>
-        <h1>Manage Users</h1>
+        <h1>Manage Student</h1>
     </div>
     <div class="m-2">
         <a class="h3"
-                th:href="@{/users/add}">Add New User
+                th:href="@{/users/new}">Add New Student
         </a>
     </div>
     <div th:if="${messages}" class="alert alert-success text-center">
@@ -29,7 +29,6 @@
                 <th>Email</th>
                 <th>First Name</th>
                 <th>Last Name</th>
-                <th>Enabled</th>
                 <th></th>
             </tr>
             </thead>
@@ -40,7 +39,6 @@
                     <td>[[${user.email}]]</td>
                     <td>[[${user.firstName}]]</td>
                     <td>[[${user.lastName}]]</td>
-                    <td th:text="${user.enabled} ? 'True' : 'False'" ></td>
                     <td>
                         <a class="h4 mr-3" th:href="@{'/users/edit/' + ${user.id}}">Edit</a>
                         <a class="h4" th:href="@{'/users/delete/' + ${user.id}}">Delete</a>
@@ -49,6 +47,9 @@
             </th:block>
             </tbody>
         </table>
+    </div>
+    <div>
+        <a th:href="@{/}" class="h6">Go To Homepage</a>
     </div>
 </div>
 </body>
