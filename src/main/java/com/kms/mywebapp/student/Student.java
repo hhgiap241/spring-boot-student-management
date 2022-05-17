@@ -1,18 +1,20 @@
 package com.kms.mywebapp.student;
 
+import com.kms.mywebapp.book.Book;
 import com.kms.mywebapp.card.StudentIdCard;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity(name = "Student")
 @Table(
-        name = "students",
-        uniqueConstraints = {
-                @UniqueConstraint(
-                        name = "student_email_unique",
-                        columnNames = "email"
-                )
-        }
+        name = "students"
+//        ,uniqueConstraints = {
+//                @UniqueConstraint(
+//                        name = "student_email_unique",
+//                        columnNames = "email"
+//                )
+//        }
 )
 public class Student {
     @Id
@@ -35,9 +37,20 @@ public class Student {
     @Column(nullable = false, name = "last_name", columnDefinition = "TEXT")
     private String lastName;
 
-
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "student", fetch = FetchType.LAZY)
+    //cascade = CascadeType.ALL, orphanRemoval = true
+    @OneToOne(mappedBy = "student", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private StudentIdCard studentIdCard;
+
+    @OneToMany(mappedBy = "student")
+    private Set<Book> books;
+
+    public Set<Book> getBooks() {
+        return books;
+    }
+
+    public void setBooks(Set<Book> books) {
+        this.books = books;
+    }
 
     public StudentIdCard getStudentIdCard() {
         return studentIdCard;
