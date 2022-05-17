@@ -33,13 +33,17 @@ public class StudentController {
     public String showNewUserForm(Model model) {
         model.addAttribute("user", new Student());
         model.addAttribute("pageTitle", "Add New Student");
-        return "user_form";
+        return "add_user_form";
     }
 
     @PostMapping("/users/new/save")
-    public String saveUser(Student user, RedirectAttributes redirectAttributes) {
-        userService.save(user);
-        redirectAttributes.addFlashAttribute("messages", "User has been saved successfully!");
+    public String addNewUser(Student user, RedirectAttributes redirectAttributes) {
+        boolean result = userService.addNewUser(user);
+        String message;
+        if(result)
+            message = "User has been saved successfully!";
+        else message = "User has not been saved!";
+        redirectAttributes.addFlashAttribute("messages", message);
         return "redirect:/users";
     }
     @GetMapping("/users/edit/{id}")
@@ -47,14 +51,20 @@ public class StudentController {
         try {
             Student student = userService.getUser(id);
             model.addAttribute("user", student);
-            model.addAttribute("pageTitle", "Edit User (ID: " + id + ")");
-            return "user_form";
+            model.addAttribute("pageTitle", "Edit Student (ID: " + id + ")");
+            return "update_user_form";
         } catch (UserNotFoundException e) {
             redirectAttributes.addFlashAttribute("messages", e.getMessage());
-            return "user_form";
+            return "update_user_form";
         }
     }
-    @DeleteMapping("/users/delete/{id}")
+    @PostMapping("/users/edit/{id}")
+    public String updateUser(RedirectAttributes redirectAttributes, @ModelAttribute("user") Student student, @RequestParam("id") Integer id) {
+        userService.updateUser(id, student);
+        redirectAttributes.addFlashAttribute("messages", "User has been updated successfully!");
+        return "redirect:/users";
+    }
+    @GetMapping("/users/delete/{id}")
     public String deleteUser(@PathVariable("id") Integer id, RedirectAttributes redirectAttributes) {
         try {
             userService.delete(id);

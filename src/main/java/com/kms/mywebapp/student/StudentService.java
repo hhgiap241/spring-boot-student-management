@@ -24,16 +24,27 @@ public class StudentService {
         return (List<StudentIdCard>) cardRepository.findAll();
     }
 
-    public void save(Student user) {
+    public boolean addNewUser(Student user) {
         String id  =  userRepository.findByEmail(user.getEmail());
-        StudentIdCard studentIdCard;
+        StudentIdCard studentIdCard = new StudentIdCard(user.getFirstName().toLowerCase() + user.getLastName().toLowerCase() + "123");
         if(id != null) {
             // exists
-            studentIdCard = cardRepository.findStudentIdCardByStudentId(Integer.parseInt(id));
-            studentIdCard.setCard_number(user.getFirstName().toLowerCase() + user.getLastName().toLowerCase() + "123");
-        }else{
-            studentIdCard = new StudentIdCard(user.getFirstName().toLowerCase() + user.getLastName().toLowerCase() + "123");
+           return false;
         }
+        studentIdCard.setStudent(user);
+        user.setStudentIdCard(studentIdCard);
+        userRepository.save(user);
+        return true;
+//        cardRepository.save(new StudentIdCard(
+//                user.getFirstName().toLowerCase() + user.getLastName().toLowerCase() + "123",
+//                user)
+//        );
+    }
+    public void updateUser(Integer id, Student user) {
+        // get old email
+        StudentIdCard studentIdCard;
+        studentIdCard = cardRepository.findStudentIdCardByStudentId(id);
+        studentIdCard.setCard_number(user.getFirstName().toLowerCase() + user.getLastName().toLowerCase() + "123");
         studentIdCard.setStudent(user);
         user.setStudentIdCard(studentIdCard);
         userRepository.save(user);
@@ -54,6 +65,7 @@ public class StudentService {
         if(value == null || value == 0) {
             throw new UserNotFoundException("User not found for id " + id);
         }
+        // select from 2 table then delete
         userRepository.deleteById(id);
     }
 }

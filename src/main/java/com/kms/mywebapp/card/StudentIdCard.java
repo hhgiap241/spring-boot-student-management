@@ -20,7 +20,7 @@ public class StudentIdCard {
     private Integer id;
     private String card_number;
 
-    @OneToOne(fetch = FetchType.LAZY, optional = false)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="student_id", referencedColumnName = "id")
     private Student student;
 
