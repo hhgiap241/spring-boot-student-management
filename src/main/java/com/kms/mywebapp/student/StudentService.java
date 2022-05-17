@@ -70,6 +70,10 @@ public class StudentService {
             throw new UserNotFoundException("User not found for id " + id);
         }
         // select from 2 table then delete
+        Student student = userRepository.findById(id).get();
+        for(Book book: student.getBooks()) {
+            book.setStudent(null);
+        }
         userRepository.deleteById(id);
     }
 }
