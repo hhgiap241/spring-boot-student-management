@@ -51,7 +51,14 @@ public class Student {
     public void setBooks(Set<Book> books) {
         this.books = books;
     }
-
+    public void addBook(Book book) {
+        this.books.add(book);
+        book.setStudent(this);
+    }
+    public void removeBook(Book book) {
+        this.books.remove(book);
+        book.setStudent(null);
+    }
     public StudentIdCard getStudentIdCard() {
         return studentIdCard;
     }

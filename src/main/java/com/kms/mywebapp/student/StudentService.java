@@ -1,5 +1,6 @@
 package com.kms.mywebapp.student;
 
+import com.kms.mywebapp.book.Book;
 import com.kms.mywebapp.card.StudentIdCard;
 import com.kms.mywebapp.card.StudentIdCardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,6 +48,9 @@ public class StudentService {
         studentIdCard.setCard_number(user.getFirstName().toLowerCase() + user.getLastName().toLowerCase() + "123");
         studentIdCard.setStudent(user);
         user.setStudentIdCard(studentIdCard);
+        for(Book book: user.getBooks()) {
+            book.setStudent(user);
+        }
         userRepository.save(user);
 //        cardRepository.save(new StudentIdCard(
 //                user.getFirstName().toLowerCase() + user.getLastName().toLowerCase() + "123",

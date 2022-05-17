@@ -1,5 +1,7 @@
 package com.kms.mywebapp.student;
 
+import com.kms.mywebapp.book.Book;
+import com.kms.mywebapp.book.BookService;
 import com.kms.mywebapp.card.StudentIdCard;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,6 +16,8 @@ public class StudentController {
     @Autowired
     private StudentService userService;
 
+    @Autowired
+    private BookService bookService;
 
     @GetMapping("/users")
     public String showUserList(Model model){
@@ -50,7 +54,9 @@ public class StudentController {
     public String showEditForm(@PathVariable("id") Integer id, Model model, RedirectAttributes redirectAttributes) {
         try {
             Student student = userService.getUser(id);
+            List<Book> bookList = bookService.getBooks();
             model.addAttribute("user", student);
+            model.addAttribute("bookList", bookList);
             model.addAttribute("pageTitle", "Edit Student (ID: " + id + ")");
             return "update_user_form";
         } catch (UserNotFoundException e) {
