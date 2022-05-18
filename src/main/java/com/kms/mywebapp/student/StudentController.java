@@ -3,6 +3,8 @@ package com.kms.mywebapp.student;
 import com.kms.mywebapp.book.Book;
 import com.kms.mywebapp.book.BookService;
 import com.kms.mywebapp.card.StudentIdCard;
+import com.kms.mywebapp.course.Course;
+import com.kms.mywebapp.course.CourseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,6 +21,9 @@ public class StudentController {
 
     @Autowired
     private BookService bookService;
+
+    @Autowired
+    private CourseRepository courseRepository;
 
     @GetMapping("/users")
     public String showUserList(Model model){
@@ -56,10 +61,10 @@ public class StudentController {
         try {
             Student student = userService.getUser(id);
             List<Book> bookList = bookService.getBooks();
+            List<Course> courseList = (List<Course>) courseRepository.findAll();
             model.addAttribute("user", student);
             model.addAttribute("bookList", bookList);
-//            List<Book> books = new ArrayList<>();
-//            model.addAttribute("bookValue", books);
+            model.addAttribute("courseList", courseList);
             model.addAttribute("pageTitle", "Edit Student (ID: " + id + ")");
             return "update_user_form";
         } catch (UserNotFoundException e) {

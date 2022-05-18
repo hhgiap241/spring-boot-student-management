@@ -35,14 +35,18 @@
             <tbody>
             <th:block th:each="course : ${courseList}">
                 <tr>
-                    <td>[[${course.id}]]</td>
-                    <td>[[${course.title}]]</td>
-                    <td>[[${course.description}]]</td>
-<!--                    <td th:text="${book?.student?.email}"></td>-->
-                    <td>Test</td>
-                    <td>
-                        <a class="h4 mr-3" th:href="@{'/books/edit/' + ${course.id}}">Edit</a>
-                        <a class="h4" th:href="@{'/books/delete/' + ${course.id}}">Delete</a>
+                    <td style="vertical-align: middle">[[${course.id}]]</td>
+                    <td  style="vertical-align: middle">[[${course.title}]]</td>
+                    <td  style="vertical-align: middle">[[${course.description}]]</td>
+<!--                    <td th:text="${course?.student?.email}"></td>-->
+                    <td  style="vertical-align: middle">
+                        <ul th:each="student : ${course.students}">
+                            <li>[[${student.email}]]</li>
+                        </ul>
+                    </td>
+                    <td  style="vertical-align: middle">
+                        <a class="h4 mr-3" th:href="@{'/courses/edit/' + ${course.id}}">Edit</a>
+                        <a class="h4" th:href="@{'/courses/delete/' + ${course.id}}">Delete</a>
                     </td>
                 </tr>
             </th:block>
