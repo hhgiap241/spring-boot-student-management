@@ -2,6 +2,7 @@ package com.kms.mywebapp.student;
 
 import com.kms.mywebapp.book.Book;
 import com.kms.mywebapp.card.StudentIdCard;
+import com.kms.mywebapp.course.Course;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -43,6 +44,22 @@ public class Student {
 
     @OneToMany(mappedBy = "student")
     private Set<Book> books;
+
+    public Set<Course> getCourses() {
+        return courses;
+    }
+
+    public void setCourses(Set<Course> courses) {
+        this.courses = courses;
+    }
+
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(
+            name = "student_course",
+            joinColumns = @JoinColumn(name = "student_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "course_id", referencedColumnName = "id")
+    )
+    private Set<Course> courses;
 
     public Set<Book> getBooks() {
         return books;
@@ -109,5 +126,10 @@ public class Student {
                 ", lastName='" + lastName + '\'' +
                 '}';
     }
-
+    public void addCourse(Course course){
+        this.courses.add(course);
+    }
+    public void removeCourse(Course course){
+        this.courses.remove(course);
+    }
 }

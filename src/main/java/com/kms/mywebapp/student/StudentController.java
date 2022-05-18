@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -57,6 +58,8 @@ public class StudentController {
             List<Book> bookList = bookService.getBooks();
             model.addAttribute("user", student);
             model.addAttribute("bookList", bookList);
+//            List<Book> books = new ArrayList<>();
+//            model.addAttribute("bookValue", books);
             model.addAttribute("pageTitle", "Edit Student (ID: " + id + ")");
             return "update_user_form";
         } catch (UserNotFoundException e) {
