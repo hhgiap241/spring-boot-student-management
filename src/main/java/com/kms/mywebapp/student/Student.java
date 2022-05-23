@@ -38,6 +38,16 @@ public class Student {
     @Column(nullable = false, name = "last_name", columnDefinition = "TEXT")
     private String lastName;
 
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    @Column(nullable = false, name = "country", columnDefinition = "TEXT")
+    private String country;
     //cascade = CascadeType.ALL, orphanRemoval = true
     @OneToOne(mappedBy = "student", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private StudentIdCard studentIdCard;

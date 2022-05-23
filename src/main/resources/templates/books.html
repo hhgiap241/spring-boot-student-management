@@ -42,8 +42,8 @@
           <td>[[${book.createdDate}]]</td>
           <td th:text="${book?.student?.email}"></td>
           <td>
-            <a class="h4 mr-3" th:href="@{'/books/edit/' + ${book.id}}">Edit</a>
-            <a class="h4" th:href="@{'/books/delete/' + ${book.id}}">Delete</a>
+            <a class="h4 mr-3" th:href="@{'/books/edit/' + ${book.id}}" style="color: darkgray">Edit</a>
+            <a class="h4" th:href="@{'/books/delete/' + ${book.id}}" style="color: darkgray">Delete</a>
           </td>
         </tr>
       </th:block>

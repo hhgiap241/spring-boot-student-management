@@ -25,4 +25,7 @@ public class CourseService {
         }
         courseRepository.deleteById(id);
     }
+    public List<Course> findCoursesHaveMoreThan2Students(){
+        return courseRepository.findCoursesHaveMoreThan2Students();
+    }
 }

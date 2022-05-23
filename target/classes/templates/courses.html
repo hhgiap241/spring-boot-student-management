@@ -15,6 +15,18 @@
            th:href="@{/courses/add}">Add New Course
         </a>
     </div>
+    <div class="row justify-content-center" style="padding: 10px 20px">
+        <div class="col-sm-4">
+            <select class="dropdown-item" aria-label="Default select example" id="filter_options">
+                <option selected>Filter options</option>
+                <option value="0">Find all courses</option>
+                <option value="1">Find all courses that have more than 2 students</option>
+                <option value="2">Find all courses that have more than 2 students leaving in HCM</option>
+                <option value="3">Three</option>
+            </select>
+        </div>
+        <button class="btn btn-primary" type="submit" id="button_filter">Submit</button>
+    </div>
     <div th:if="${messages}" class="alert alert-success text-center">
         [[${messages}]]
         <button type="button" class="close" onclick="this.parentElement.style.display='none'">
@@ -45,7 +57,7 @@
                         </ul>
                     </td>
                     <td  style="vertical-align: middle">
-                        <a class="h4 mr-3" th:href="@{'/courses/edit/' + ${course.id}}">Edit</a>
+                        <a class="h4 mr-3" th:href="@{'/courses/edit/' + ${course.id}}" style="color: darkgray">Edit</a>
                         <a class="h4" th:href="@{'/courses/delete/' + ${course.id}}">Delete</a>
                     </td>
                 </tr>
@@ -57,5 +69,12 @@
         <a th:href="@{/}" class="h6">Go To Homepage</a>
     </div>
 </div>
+<script>
+    document.getElementById('button_filter').addEventListener('click', function () {
+        let filter_options = document.getElementById('filter_options').value;
+        let url = '/courses/filter?value=' + filter_options;
+        window.location.href = url;
+    });
+</script>
 </body>
 </html>

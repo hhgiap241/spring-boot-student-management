@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class StudentService {
@@ -48,8 +49,13 @@ public class StudentService {
         studentIdCard.setCard_number(user.getFirstName().toLowerCase() + user.getLastName().toLowerCase() + "123");
         studentIdCard.setStudent(user);
         user.setStudentIdCard(studentIdCard);
-        for(Book book: user.getBooks()) {
-            book.setStudent(user);
+        Set<Book> books = user.getBooks();
+        if(books != null) {
+            for(Book book: books) {
+                if(book.getStudent() == null) {
+                    book.setStudent(user);
+                }
+            }
         }
         userRepository.save(user);
 //        cardRepository.save(new StudentIdCard(
@@ -76,4 +82,5 @@ public class StudentService {
         }
         userRepository.deleteById(id);
     }
+
 }

@@ -31,6 +31,12 @@ public class StudentController {
         model.addAttribute("listUsers", userList);
         return "users";
     }
+//    @GetMapping("/users/dd")
+//    @ResponseBody
+//    public List<Student> showUserListd(){
+//        List<Student> userList = userService.listAll();
+//        return userList;
+//    }
 
     @GetMapping("/users/id-cards")
     public String showCardList(Model model){
@@ -60,7 +66,7 @@ public class StudentController {
     public String showEditForm(@PathVariable("id") Integer id, Model model, RedirectAttributes redirectAttributes) {
         try {
             Student student = userService.getUser(id);
-            List<Book> bookList = bookService.getBooks();
+            List<Book> bookList = bookService.getAvailableBooks();
             List<Course> courseList = (List<Course>) courseRepository.findAll();
             model.addAttribute("user", student);
             model.addAttribute("bookList", bookList);
@@ -88,4 +94,5 @@ public class StudentController {
         }
         return "redirect:/users";
     }
+
 }

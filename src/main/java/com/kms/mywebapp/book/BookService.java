@@ -21,4 +21,8 @@ public class BookService {
         bookRepository.save(book);
         return true;
     }
+
+    public List<Book> getAvailableBooks() {
+        return bookRepository.findAllAvailableBooks();
+    }
 }
