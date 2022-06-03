@@ -20,12 +20,17 @@ public class CourseService {
     public void deleteCourse(Integer id){
         // delete course from database
         Course course = courseRepository.findById(id).get();
-        for (Student student: course.getStudents()) {
-            student.getCourses().remove(course);
-        }
+//        for (Student student: course.getStudents()) {
+//            student.getCourses().remove(course);
+//        }
+        course.getStudents().stream()
+                .forEach(student -> student.getCourses().remove(course));
         courseRepository.deleteById(id);
     }
     public List<Course> findCoursesHaveMoreThan2Students(){
         return courseRepository.findCoursesHaveMoreThan2Students();
+    }
+    public List<Course> findCourseHaveMoreThan2StudentsLivingInHCMC(){
+        return courseRepository.findCourseHaveMoreThan2StudentsLivingInHCMC();
     }
 }

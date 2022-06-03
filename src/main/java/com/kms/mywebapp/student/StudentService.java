@@ -6,9 +6,11 @@ import com.kms.mywebapp.card.StudentIdCardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Stream;
 
 @Service
 public class StudentService {
@@ -18,20 +20,20 @@ public class StudentService {
     @Autowired
     private StudentIdCardRepository cardRepository;
 
-    public List<Student> listAll(){
+    public List<Student> listAll() {
         return (List<Student>) userRepository.findAll();
     }
 
-    public List<StudentIdCard> listAllCard(){
+    public List<StudentIdCard> listAllCard() {
         return (List<StudentIdCard>) cardRepository.findAll();
     }
 
     public boolean addNewUser(Student user) {
-        String id  =  userRepository.findByEmail(user.getEmail());
+        String id = userRepository.findByEmail(user.getEmail());
         StudentIdCard studentIdCard = new StudentIdCard(user.getFirstName().toLowerCase() + user.getLastName().toLowerCase() + "123");
-        if(id != null) {
+        if (id != null) {
             // exists
-           return false;
+            return false;
         }
         studentIdCard.setStudent(user);
         user.setStudentIdCard(studentIdCard);
@@ -42,6 +44,7 @@ public class StudentService {
 //                user)
 //        );
     }
+
     public void updateUser(Integer id, Student user) {
         // get old email
         StudentIdCard studentIdCard;
@@ -50,36 +53,44 @@ public class StudentService {
         studentIdCard.setStudent(user);
         user.setStudentIdCard(studentIdCard);
         Set<Book> books = user.getBooks();
-        if(books != null) {
-            for(Book book: books) {
-                if(book.getStudent() == null) {
-                    book.setStudent(user);
-                }
-            }
-        }
+//        if(books != null) {
+//            for(Book book: books) {
+//                if(book.getStudent() == null) {
+//                    book.setStudent(user);
+//                }
+//            }
+//        }
+        Optional.ofNullable(books).stream()
+                .flatMap(Collection::stream)
+                .filter(book -> book.getStudent() == null)
+                .forEach(book -> book.setStudent(user));
+
         userRepository.save(user);
 //        cardRepository.save(new StudentIdCard(
 //                user.getFirstName().toLowerCase() + user.getLastName().toLowerCase() + "123",
 //                user)
 //        );
     }
+
     public Student getUser(Integer id) throws UserNotFoundException {
-       Optional<Student> optionalUser =  userRepository.findById(id);
-       if(optionalUser.isPresent()) {
-           return optionalUser.get();
-       }
-       throw new UserNotFoundException("User not found for id " + id);
+        Optional<Student> optionalUser = userRepository.findById(id);
+        if (optionalUser.isPresent()) {
+            return optionalUser.get();
+        }
+        throw new UserNotFoundException("User not found for id " + id);
     }
+
     public void delete(Integer id) throws UserNotFoundException {
         Long value = userRepository.countById(id);
-        if(value == null || value == 0) {
+        if (value == null || value == 0) {
             throw new UserNotFoundException("User not found for id " + id);
         }
         // select from 2 table then delete
         Student student = userRepository.findById(id).get();
-        for(Book book: student.getBooks()) {
-            book.setStudent(null);
-        }
+//        for (Book book : student.getBooks()) {
+//            book.setStudent(null);
+//        }
+        student.getBooks().stream().forEach(book -> book.setStudent(null));
         userRepository.deleteById(id);
     }
 

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>[[${pageTitle}]]</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
+    <link rel="stylesheet" type="text/css" href="/css/styles.css">
+</head>
+<body>
+<div class="container-fluid">
+    <div class="text-center">
+        <h2>[[${pageTitle}]]</h2>
+    </div>
+    <form th:action="@{'/books/edit/' +  ${book.id}}" method="post" th:object="${book}" class="form-modify">
+        <input type="hidden" th:field="*{id}">
+        <div class="border border-secondary rounded p-3">
+            <div class="form-group row">
+                <label class="col-sm-4 col-form-label">Name: </label>
+                <div class="col-sm-8">
+                    <input type="text" th:field="*{name}" class="form-control" placeholder="Enter name" required>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-4 col-form-label">Description: </label>
+                <div class="col-sm-8">
+                    <input type="text" th:field="*{description}" class="form-control" placeholder="Enter description" required>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-4 col-form-label">Created Date: </label>
+                <div class="col-sm-8">
+                    <input type="text" th:field="*{createdDate}" class="form-control" placeholder="Enter created date" required>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-4 col-form-label">Student: </label>
+                <div class="col-sm-8">
+                    <input type="hidden" th:field="*{student}">
+                    <input readonly type="text" th:value="${book?.student?.email}" class="form-control">
+                </div>
+            </div>
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary m-2">Save</button>
+                <button type="button" class="btn btn-secondary m-2" onclick="cancelForm()">Cancel</button>
+            </div>
+        </div>
+    </form>
+
+</div>
+<script type="text/javascript">
+    function cancelForm() {
+        window.location = "[[@{/books}]]";
+    }
+</script>
+</body>
+</html>

@@ -25,4 +25,11 @@ public class BookService {
     public List<Book> getAvailableBooks() {
         return bookRepository.findAllAvailableBooks();
     }
+    public Book getBook(Integer id){
+        return bookRepository.findById(id).get();
+    }
+
+    public void updateBook(Book book) {
+        bookRepository.save(book);
+    }
 }

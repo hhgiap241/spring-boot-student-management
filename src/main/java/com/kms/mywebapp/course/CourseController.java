@@ -53,6 +53,9 @@ public class CourseController {
             case 1:
                 courseList = courseService.findCoursesHaveMoreThan2Students();
                 break;
+            case 2:
+                courseList = courseService.findCourseHaveMoreThan2StudentsLivingInHCMC();
+                break;
         }
         model.addAttribute("courseList", courseList);
         return "courses";
