@@ -32,4 +32,8 @@ public class BookService {
     public void updateBook(Book book) {
         bookRepository.save(book);
     }
+
+    public void deleteBook(Integer id) {
+        bookRepository.deleteById(id);
+    }
 }
