@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Controller
+@RequestMapping("/students")
 public class StudentController {
     @Autowired
     private StudentService userService;
@@ -25,11 +26,11 @@ public class StudentController {
     @Autowired
     private CourseRepository courseRepository;
 
-    @GetMapping("/users")
-    public String showUserList(Model model){
+    @GetMapping("")
+    public String getAllStudents(Model model){
         List<Student> userList = userService.listAll();
-        model.addAttribute("listUsers", userList);
-        return "users";
+        model.addAttribute("listStudent", userList);
+        return "students";
     }
 //    @GetMapping("/users/dd")
 //    @ResponseBody
@@ -38,61 +39,61 @@ public class StudentController {
 //        return userList;
 //    }
 
-    @GetMapping("/users/id-cards")
-    public String showCardList(Model model){
+    @GetMapping("/id-cards")
+    public String getAllStudentCards(Model model){
         List<StudentIdCard> cardList = userService.listAllCard();
         model.addAttribute("listCards", cardList);
         return "cards";
     }
 
-    @GetMapping("/users/new")
-    public String showNewUserForm(Model model) {
-        model.addAttribute("user", new Student());
+    @GetMapping("/add")
+    public String showAddNewStudentForm(Model model) {
+        model.addAttribute("student", new Student());
         model.addAttribute("pageTitle", "Add New Student");
-        return "add_user_form";
+        return "add_student_form";
     }
 
-    @PostMapping("/users/new/save")
-    public String addNewUser(Student user, RedirectAttributes redirectAttributes) {
+    @PostMapping("/add")
+    public String addNewStudent(Student user, RedirectAttributes redirectAttributes) {
         boolean result = userService.addNewUser(user);
         String message;
         if(result)
-            message = "User has been saved successfully!";
-        else message = "User has not been saved!";
+            message = "Student has been saved successfully!";
+        else message = "Student has not been saved!";
         redirectAttributes.addFlashAttribute("messages", message);
-        return "redirect:/users";
+        return "redirect:/students";
     }
-    @GetMapping("/users/edit/{id}")
-    public String showEditForm(@PathVariable("id") Integer id, Model model, RedirectAttributes redirectAttributes) {
+    @GetMapping("/edit/{id}")
+    public String showEditStudentForm(@PathVariable("id") Integer id, Model model, RedirectAttributes redirectAttributes) {
         try {
             Student student = userService.getUser(id);
             List<Book> bookList = bookService.getAvailableBooks();
             List<Course> courseList = (List<Course>) courseRepository.findAll();
-            model.addAttribute("user", student);
+            model.addAttribute("student", student);
             model.addAttribute("bookList", bookList);
             model.addAttribute("courseList", courseList);
             model.addAttribute("pageTitle", "Edit Student (ID: " + id + ")");
-            return "update_user_form";
+            return "update_student_form";
         } catch (UserNotFoundException e) {
             redirectAttributes.addFlashAttribute("messages", e.getMessage());
-            return "update_user_form";
+            return "update_student_form";
         }
     }
-    @PostMapping("/users/edit/{id}")
-    public String updateUser(RedirectAttributes redirectAttributes, @ModelAttribute("user") Student student, @RequestParam("id") Integer id) {
+    @PostMapping("/edit/{id}")
+    public String editStudent(RedirectAttributes redirectAttributes, @ModelAttribute("student") Student student, @RequestParam("id") Integer id) {
         userService.updateUser(id, student);
-        redirectAttributes.addFlashAttribute("messages", "User has been updated successfully!");
-        return "redirect:/users";
+        redirectAttributes.addFlashAttribute("messages", "Student has been updated successfully!");
+        return "redirect:/students";
     }
-    @GetMapping("/users/delete/{id}")
-    public String deleteUser(@PathVariable("id") Integer id, RedirectAttributes redirectAttributes) {
+    @GetMapping("/delete/{id}")
+    public String deleteStudent(@PathVariable("id") Integer id, RedirectAttributes redirectAttributes) {
         try {
             userService.delete(id);
-            redirectAttributes.addFlashAttribute("messages", "User " + id + " has been deleted successfully!");
+            redirectAttributes.addFlashAttribute("messages", "Student " + id + " has been deleted successfully!");
         } catch (UserNotFoundException e) {
             redirectAttributes.addFlashAttribute("messages", e.getMessage());
         }
-        return "redirect:/users";
+        return "redirect:/students";
     }
 
 }

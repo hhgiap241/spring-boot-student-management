@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Manage Students</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
+<!--    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>-->
+</head>
+<body>
+<div class="container-fluid text-center">
+    <div>
+        <h1>Manage Students</h1>
+    </div>
+    <div class="m-2">
+        <a class="h3"
+           th:href="@{/students/add}">Add New Student
+        </a>
+    </div>
+    <div th:if="${messages}" class="alert alert-success text-center">
+        [[${messages}]]
+        <button type="button" class="close" onclick="this.parentElement.style.display='none'">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div>
+        <table class="table table-bordered">
+            <thead class="thead-dark">
+            <tr>
+                <th>ID</th>
+                <th>Email</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>City</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <th:block th:each="student : ${listStudent}">
+                <tr>
+                    <td>[[${student.id}]]</td>
+                    <td>[[${student.email}]]</td>
+                    <td>[[${student.firstName}]]</td>
+                    <td>[[${student.lastName}]]</td>
+                    <td>[[${student.country}]]</td>
+                    <td>
+                        <a th:href="@{'/students/edit/' + ${student.id}}">
+                            <button type="button" class="btn btn-primary">
+                                Edit
+                            </button>
+                        </a>
+                        <!--<a class="h4" th:href="@{'/student/delete/' + ${student.id}}">Delete</a>-->
+                        <button type="button" class="btn btn-primary open-DeleteStudentDialog" data-toggle="modal"
+                                data-target="#deleteStudentModal" data-th-id="${student.id}">
+                            Delete
+                        </button>
+                    </td>
+                </tr>
+            </th:block>
+            </tbody>
+        </table>
+    </div>
+    <div>
+        <a th:href="@{/}" class="h6">Go To Homepage</a>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="deleteStudentModal" tabindex="-1" role="dialog" aria-labelledby="deleteStudentModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteStudentModalLabel">Confirm</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Are you sure to delete this student?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                <a id="deleteLink">
+                    <button type="button" class="btn btn-primary">Yes</button>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<script src="/js/app.js"></script>
+</body>
+</html>

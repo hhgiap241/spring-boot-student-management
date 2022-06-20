@@ -4,15 +4,16 @@
     <meta charset="UTF-8">
     <title>Welcome to my application</title>
     <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
 <body>
 <div class="container-fluid text-center">
     <h1>Welcome to my application</h1>
     <div>
-        <a th:href="@{/users}" class="h2">Manage Student</a>
+        <a th:href="@{/students}" class="h2">Manage Student</a>
     </div>
     <div>
-        <a th:href="@{/users/id-cards}" class="h2">Manage Student ID Card</a>
+        <a th:href="@{/students/id-cards}" class="h2">Manage Student ID Card</a>
     </div>
     <div>
         <a th:href="@{/books}" class="h2">Manage Book</a>

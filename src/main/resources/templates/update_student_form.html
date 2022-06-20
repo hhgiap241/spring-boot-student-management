@@ -5,13 +5,14 @@
     <title>[[${pageTitle}]]</title>
     <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
     <link rel="stylesheet" type="text/css" href="/css/styles.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
 <body>
 <div class="container-fluid">
     <div class="text-center">
         <h2>[[${pageTitle}]]</h2>
     </div>
-    <form th:action="@{/users/new/save}" method="post" th:object="${user}" class="form-modify">
+    <form th:action="@{'/students/edit/' +  ${student.id}}" method="post" th:object="${student}" class="form-modify">
         <input type="hidden" th:field="*{id}">
         <div class="border border-secondary rounded p-3">
             <div class="form-group row">
@@ -38,6 +39,28 @@
                     <input type="text" th:field="*{country}" class="form-control" placeholder="Enter city" required>
                 </div>
             </div>
+            <div class="form-group row">
+                <label class="col-sm-4 col-form-label">Available Books: </label>
+            </div>
+            <th:block th:each="book : ${bookList}">
+                <div class="form-group row" style="padding-left: 140px">
+                    <div class="col-sm-8">
+                        <input type="checkbox" th:id="${book.id}" th:field="*{books}" th:value="${book.id}" class="form-check-input">
+                        <label class="form-check-label" th:for="${book.id}" th:text="${book.name}"></label>
+                    </div>
+                </div>
+            </th:block>
+            <div class="form-group row">
+                <label class="col-sm-4 col-form-label">Available Courses: </label>
+            </div>
+            <th:block th:each="course : ${courseList}">
+                <div class="form-group row" style="padding-left: 140px">
+                    <div class="col-sm-8">
+                        <input type="checkbox" th:id="${course.id}" th:field="*{courses}" th:value="${course.id}" class="form-check-input">
+                        <label class="form-check-label" th:for="${course.id}" th:text="${course.title}"></label>
+                    </div>
+                </div>
+            </th:block>
             <div class="text-center">
                 <button type="submit" class="btn btn-primary m-2">Save</button>
                 <button type="button" class="btn btn-secondary m-2" onclick="cancelForm()">Cancel</button>
@@ -48,7 +71,7 @@
 </div>
 <script type="text/javascript">
     function cancelForm() {
-        window.location = "[[@{/users}]]";
+        window.location = "[[@{/students}]]";
     }
 </script>
 </body>

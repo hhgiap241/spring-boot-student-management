@@ -27,6 +27,7 @@ public class Book {
     @Column(columnDefinition = "TEXT", nullable = false)
     private String createdDate;
 
+    // name of the column contain foreign key in the table
     @ManyToOne
     @JoinColumn(name = "student_id")
     private Student student;
