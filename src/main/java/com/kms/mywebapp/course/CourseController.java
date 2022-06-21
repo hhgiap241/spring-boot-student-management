@@ -2,6 +2,7 @@ package com.kms.mywebapp.course;
 
 import com.kms.mywebapp.student.Student;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +17,7 @@ public class CourseController {
     private CourseService courseService;
 
     @GetMapping(value = "")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_ADMINTRAINEE', 'TEACHER')")
     public String showCourseList(Model model){
         List<Course> courseList = courseService.listAll();
         model.addAttribute("courseList", courseList);

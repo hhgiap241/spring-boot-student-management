@@ -8,7 +8,8 @@
 </head>
 <body>
 <div class="container-fluid text-center">
-    <h1>Welcome to my application</h1>
+<!--    <h1>Welcome to my application</h1>-->
+    <h1 th:text="${#request.remoteUser} ? 'Welcome, ' + ${#request.remoteUser} : 'Welcome, guest'"></h1>
     <div>
         <a th:href="@{/students}" class="h2">Manage Student</a>
     </div>

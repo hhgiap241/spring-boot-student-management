@@ -2,6 +2,7 @@ package com.kms.mywebapp.book;
 
 import com.kms.mywebapp.student.Student;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +19,7 @@ public class BookController {
     private BookService bookService;
 
     @GetMapping(value = "")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_ADMINTRAINEE', 'TEACHER')")
     public String getBooks(Model model) {
         List<Book> bookList = bookService.getBooks();
         model.addAttribute("bookList", bookList);
