@@ -5,6 +5,7 @@ import com.kms.mywebapp.book.BookService;
 import com.kms.mywebapp.card.StudentIdCard;
 import com.kms.mywebapp.course.Course;
 import com.kms.mywebapp.course.CourseRepository;
+import com.kms.mywebapp.student.exception.StudentNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -12,7 +13,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -30,7 +30,7 @@ public class StudentController {
     @GetMapping("")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_ADMINTRAINEE', 'TEACHER')")
     public String getAllStudents(Model model){
-        List<Student> userList = userService.listAll();
+        List<Student> userList = userService.getAllStudents();
         model.addAttribute("listStudent", userList);
         return "students";
     }
@@ -43,7 +43,7 @@ public class StudentController {
 
     @GetMapping("/id-cards")
     public String getAllStudentCards(Model model){
-        List<StudentIdCard> cardList = userService.listAllCard();
+        List<StudentIdCard> cardList = userService.getAllStudentIdCard();
         model.addAttribute("listCards", cardList);
         return "cards";
     }
@@ -57,7 +57,7 @@ public class StudentController {
 
     @PostMapping("/add")
     public String addNewStudent(Student user, RedirectAttributes redirectAttributes) {
-        boolean result = userService.addNewUser(user);
+        boolean result = userService.addNewStudent(user);
         String message;
         if(result)
             message = "Student has been saved successfully!";
@@ -68,7 +68,7 @@ public class StudentController {
     @GetMapping("/edit/{id}")
     public String showEditStudentForm(@PathVariable("id") Integer id, Model model, RedirectAttributes redirectAttributes) {
         try {
-            Student student = userService.getUser(id);
+            Student student = userService.getStudentById(id);
             List<Book> bookList = bookService.getAvailableBooks();
             List<Course> courseList = (List<Course>) courseRepository.findAll();
             model.addAttribute("student", student);
@@ -76,23 +76,23 @@ public class StudentController {
             model.addAttribute("courseList", courseList);
             model.addAttribute("pageTitle", "Edit Student (ID: " + id + ")");
             return "update_student_form";
-        } catch (UserNotFoundException e) {
+        } catch (StudentNotFoundException e) {
             redirectAttributes.addFlashAttribute("messages", e.getMessage());
             return "update_student_form";
         }
     }
     @PostMapping("/edit/{id}")
     public String editStudent(RedirectAttributes redirectAttributes, @ModelAttribute("student") Student student, @RequestParam("id") Integer id) {
-        userService.updateUser(id, student);
+        userService.updateStudentInfo(id, student);
         redirectAttributes.addFlashAttribute("messages", "Student has been updated successfully!");
         return "redirect:/students";
     }
     @GetMapping("/delete/{id}")
     public String deleteStudent(@PathVariable("id") Integer id, RedirectAttributes redirectAttributes) {
         try {
-            userService.delete(id);
+            userService.deleteStudent(id);
             redirectAttributes.addFlashAttribute("messages", "Student " + id + " has been deleted successfully!");
-        } catch (UserNotFoundException e) {
+        } catch (StudentNotFoundException e) {
             redirectAttributes.addFlashAttribute("messages", e.getMessage());
         }
         return "redirect:/students";

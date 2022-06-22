@@ -38,6 +38,20 @@ public class Student {
     @Column(nullable = false, name = "last_name", columnDefinition = "TEXT")
     private String lastName;
 
+    public Student(){}
+
+    public Student(String email, String firstName, String lastName,
+                   String country, StudentIdCard studentIdCard,
+                   Set<Book> books, Set<Course> courses) {
+        this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.country = country;
+        this.studentIdCard = studentIdCard;
+        this.books = books;
+        this.courses = courses;
+    }
+
     public String getCountry() {
         return country;
     }

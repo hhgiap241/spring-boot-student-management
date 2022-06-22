@@ -8,8 +8,7 @@ import java.util.List;
 
 
 public interface StudentRepository extends CrudRepository<Student, Integer> {
-    public Long countById(Integer id);
+    public Long countById(Integer id); // check if student exists
     @Query(value = "select id from students where email = ?1", nativeQuery = true)
     public String findByEmail(String email);
-
 }
